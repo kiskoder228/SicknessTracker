@@ -7,7 +7,6 @@ namespace IllnessTracker.Services;
 
 public class DatabaseService
 {
-    // ИСПРАВЛЕНО: HospitalDB
     private readonly string _connStr = "Host=localhost;Port=5432;Database=HospitalDB;Username=postgres;Password=1234";
 
     public List<IllnessRecordView> GetPage(int page, int size)

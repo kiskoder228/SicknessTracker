@@ -1,0 +1,45 @@
+CREATE TABLE Departments (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Floor INT NOT NULL
+);
+
+CREATE TABLE Employees (
+    Id SERIAL PRIMARY KEY,
+    FullName VARCHAR(100) NOT NULL,
+    DepartmentId INT REFERENCES Departments(Id) ON DELETE SET NULL,
+    Position VARCHAR(50),
+    HireDate DATE NOT NULL
+);
+
+CREATE TABLE IllnessTypes (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    IsInfectious BOOLEAN NOT NULL,
+    QuarantineDays INT NOT NULL
+);
+
+CREATE TABLE IllnessRecords (
+    Id SERIAL PRIMARY KEY,
+    EmployeeId INT REFERENCES Employees(Id) ON DELETE CASCADE,
+    IllnessTypeId INT REFERENCES IllnessTypes(Id) ON DELETE RESTRICT,
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    DiagnosisNote TEXT
+);
+
+-- Добавим немного тестовых данных
+INSERT INTO Departments (Name, Floor) VALUES ('Бухгалтерия', 2), ('IT-отдел', 3), ('Отдел кадров', 1);
+
+INSERT INTO Employees (FullName, DepartmentId, Position, HireDate) VALUES 
+('Иванов Иван Иванович', 1, 'Главбух', '2020-01-15'),
+('Петров Петр Петрович', 2, 'Программист', '2021-03-10'),
+('Сидорова Анна', 3, 'HR', '2022-05-20');
+
+INSERT INTO IllnessTypes (Name, IsInfectious, QuarantineDays) VALUES 
+('Грипп', TRUE, 7), ('ОРВИ', TRUE, 5), ('Остеохондроз', FALSE, 0);
+
+INSERT INTO IllnessRecords (EmployeeId, IllnessTypeId, StartDate, EndDate, DiagnosisNote) VALUES 
+(1, 1, '2023-10-01', '2023-10-10', 'Высокая температура'),
+(2, 2, '2023-11-05', '2023-11-10', 'Легкая простуда'),
+(3, 3, '2023-12-01', '2023-12-15', 'Обострение');
